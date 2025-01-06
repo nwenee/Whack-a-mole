@@ -111,6 +111,7 @@ function updateScore() {
  * the points.
  */
 function clearScore() {
+<<<<<<< HEAD
   points = 0;
   score.textContent = points;
   return points;
@@ -123,6 +124,60 @@ function setEventListeners() {
   moles.forEach((mole) => {
     mole.addEventListener("click", whack);
   });
+=======
+  // TODO: Write your code here
+  // points = 0;
+  // score.textContent = points;
+  return points;
+}
+
+/**
+*
+* Updates the control board with the timer if time > 0
+*
+*/
+function updateTimer() {
+  // TODO: Write your code here.
+  // hint: this code is provided to you in the instructions.
+  
+  return time;
+}
+
+/**
+*
+* Starts the timer using setInterval. For each 1000ms (1 second)
+* the updateTimer function get called. This function is already implemented
+*
+*/
+function startTimer() {
+  // TODO: Write your code here
+  // timer = setInterval(updateTimer, 1000);
+  return timer;
+}
+
+/**
+*
+* This is the event handler that gets called when a player
+* clicks on a mole. The setEventListeners should use this event
+* handler (e.g. mole.addEventListener('click', whack)) for each of
+* the moles.
+*
+*/
+function whack(event) {
+  // TODO: Write your code here.
+  // call updateScore()
+  return points;
+}
+
+/**
+*
+* Adds the 'click' event listeners to the moles. See the instructions
+* for an example on how to set event listeners using a for loop.
+*/
+function setEventListeners(){
+  // TODO: Write your code here
+
+>>>>>>> parent of 685d5d5 (Update index.js)
   return moles;
 }
 /*
