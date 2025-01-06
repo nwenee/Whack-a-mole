@@ -165,6 +165,10 @@ function startTimer() {
 */
 function whack(event) {
   // TODO: Write your code here.
+<<<<<<< HEAD
+=======
+  const moleHole = document.querySelector("hole");
+>>>>>>> parent of ebff0d3 (Update index.js)
   // call updateScore()
   return points;
 }
