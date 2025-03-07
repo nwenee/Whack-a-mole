@@ -53,9 +53,14 @@ function gameOver() {
     return timeoutId;
   } else {
     return stopGame();
+    const gameStopped = stopGame();
+    return gameStopped; 
   }
 }
-
+Function stopGame() {
+  clearIntervel(timer);
+  return "Game over!";
+}
 /**
  * Calls the showAndHide function with a specific delay and hole.
  */
