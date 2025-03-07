@@ -49,18 +49,15 @@ function chooseHole(holes) {
  */
 function gameOver() {
   if (time > 0) {
+    // If time is still available, continue the game
     timeoutId = showUp();
-    return timeoutId;
+    return timeoutId;  // Return the timeoutId from showUp()
   } else {
-    return stopGame();
-    const gameStopped = stopGame();
-    return gameStopped; 
+    // If time is 0, stop the game
+    return stopGame();  // Stop the game and return the message
   }
 }
-Function stopGame() {
-  clearIntervel(timer);
-  return "Game over!";
-}
+
 /**
  * Calls the showAndHide function with a specific delay and hole.
  */
