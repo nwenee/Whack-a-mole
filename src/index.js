@@ -1,188 +1,96 @@
-const holes = document.querySelectorAll('.hole');
-const moles = document.querySelectorAll('.mole');
-const startButton = document.querySelector('#start');
-// Add missing query selectors
-const score = document.querySelector('#score'); // Use querySelector() to get the score element
-const timerDisplay = document.querySelector('#timer'); // Use querySelector() to get the timer element
+const startButton = document.getElementById('start');
+const scoreElement = document.getElementById('score');
+const timerElement = document.getElementById('timer');
+const molesong = document.getElementById('molesong');
+const hitSound = document.getElementById('hit');
 
-let time = 0;
+let score = 0;
+let time = 30; // 30 seconds for the game
 let timer;
-let lastHole = 0;
-let points = 0;
-let difficulty = "hard";
 
-/**
- * Generates a random integer within a range.
- */
-function randomInteger(min, max) {
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-}
+startButton.addEventListener('click', startGame);
 
-/**
- * Sets the time delay based on the difficulty parameter.
- */
-function setDelay(difficulty) {
-  if (difficulty === "easy") {
-    return 1500;
-  } else if (difficulty === "normal") {
-    return 1000;
-  } else if (difficulty === "hard") {
-    return randomInteger(600, 1200);
-  }
-}
-
-/**
- * Chooses a random hole from a list of holes.
- */
-function chooseHole(holes) {
-  const index = randomInteger(0, holes.length - 1);
-  const hole = holes[index];
-  if (hole === lastHole) {
-    return chooseHole(holes);
-  }
-  lastHole = hole;
-  return hole;
-}
-
-/**
- * Calls showUp() if time > 0, otherwise stops the game.
- */
-function gameOver() {
-  if (time > 0) {
-    // If time is still available, continue the game
-    timeoutId = showUp();
-    return timeoutId;  // Return the timeoutId from showUp()
-  } else {
-    // If time is 0, stop the game
-    return stopGame();  // Stop the game and return the message
-  }
-}
-
-/**
- * Calls the showAndHide function with a specific delay and hole.
- */
-function showUp() {
-  let delay = setDelay(difficulty); // Use setDelay() to get the delay based on difficulty
-  const hole = chooseHole(holes);  // Use chooseHole() to get a random hole
-  return showAndHide(hole, delay);
-}
-
-/**
- * Shows and hides the mole.
- */
-function showAndHide(hole, delay) {
-  toggleVisibility(hole);  // Show the mole
-  const timeoutID = setTimeout(() => {
-    toggleVisibility(hole);  // Hide the mole
-    gameOver();  // Call gameOver() to either stop the game or continue
-  }, delay);
-  return timeoutID;
-}
-
-/**
- * Adds or removes the 'show' class to/from a hole.
- */
-function toggleVisibility(hole) {
-  hole.classList.toggle('show');
-  return hole;
-}
-
-/**
- * Updates the score when a mole is clicked.
- */
-function updateScore() {
-  points += 1;
-  score.textContent = points;
-  return points;
-}
-
-/**
- * Clears the score.
- */
-function clearScore() {
-  points = 0;
-  score.textContent = points;
-  return points;
-}
-
-/**
- * Updates the timer display.
- */
-function updateTimer() {
-  timerDisplay.textContent = time;
-  return time;
-}
-
-/**
- * Starts the timer.
- */
-function startTimer() {
-  timer = setInterval(updateTimer, 1000);
-  return timer;
-}
-
-/**
- * Event handler for when a mole is clicked.
- */
-function whack(event) {
-  updateScore();  // Increment the score when a mole is clicked
-  return points;
-}
-
-/**
- * Sets event listeners on each mole.
- */
-function setEventListeners() {
-  moles.forEach(mole => mole.addEventListener('click', whack));
-  return moles;
-}
-
-/**
- * Sets the duration of the game.
- */
-function setDuration(duration) {
-  time = duration;
-  return time;
-}
-
-/**
- * Stops the game.
- */
-function stopGame() {
-  clearInterval(timer);
-  return "game stopped";
-}
-
-/**
- * Starts the game when the start button is clicked.
- */
 function startGame() {
-  clearScore();  // Clear the score
-  setDuration(10);  // Set game duration (10 seconds for example)
-  setEventListeners();  // Set up event listeners on the moles
-  startTimer();  // Start the timer
-  showUp();  // Start showing moles
-  return "game started";
+  score = 0;
+  time = 30;
+  scoreElement.textContent = score;
+  timerElement.textContent = time;
+  
+  // Start background music
+  molesong.currentTime = 0; // Reset song to beginning
+  molesong.volume = 0.5; // Set volume to 50%
+  molesong.loop = true; // Make the song loop
+  molesong.play();
+  
+  timer = setInterval(updateTimer, 1000); // Start the timer
+  showMole();
 }
 
-startButton.addEventListener("click", startGame);
+function updateTimer() {
+  if (time > 0) {
+    time--;
+    timerElement.textContent = time;
+  } else {
+    clearInterval(timer); // Stop the game when the timer runs out
+    
+    // Fade out the music
+    const fadeOut = setInterval(() => {
+      if (molesong.volume > 0.1) {
+        molesong.volume -= 0.1;
+      } else {
+        molesong.pause();
+        molesong.volume = 0.5; // Reset volume for next game
+        clearInterval(fadeOut);
+      }
+    }, 100);
+    
+    // Play hit sound as game over sound
+    hitSound.currentTime = 0;
+    hitSound.play();
+    
+    setTimeout(() => {
+      alert(`Game Over! Your score is: ${score}`);
+    }, 500);
+  }
+}
 
-// Testing code for validating the functions
-window.randomInteger = randomInteger;
-window.chooseHole = chooseHole;
-window.setDelay = setDelay;
-window.startGame = startGame;
-window.gameOver = gameOver;
-window.showUp = showUp;
-window.holes = holes;
-window.moles = moles;
-window.showAndHide = showAndHide;
-window.points = points;
-window.updateScore = updateScore;
-window.clearScore = clearScore;
-window.whack = whack;
-window.time = time;
-window.setDuration = setDuration;
-window.toggleVisibility = toggleVisibility;
-window.setEventListeners = setEventListeners;
+function showMole() {
+  if (time <= 0) return; // Stop showing moles if game is over
+  
+  const randomHole = document.getElementById(`hole${Math.floor(Math.random() * 9)}`);
+  const mole = randomHole.querySelector('.mole');
+  
+  // Show mole
+  mole.style.top = '0';
+  
+  // Hide mole after a random delay between 500ms and 1500ms
+  const delay = Math.random() * 1000 + 500;
+  setTimeout(() => {
+    if (time > 0) { // Only hide if game is still running
+      mole.style.top = '100%';
+      
+      // Wait a bit before showing next mole
+      setTimeout(() => {
+        if (time > 0) showMole(); // Only show next mole if game is still running
+      }, 300);
+    }
+  }, delay);
+}
 
+// Detect mole click
+document.querySelectorAll('.mole').forEach(mole => {
+  mole.addEventListener('click', () => {
+    score++;
+    scoreElement.textContent = score;
+    
+    // Play hit sound when mole is clicked
+    hitSound.currentTime = 0; // Reset sound to beginning
+    hitSound.play();
+    
+    // Add visual feedback when hitting a mole
+    mole.style.transform = 'scale(0.9)';
+    setTimeout(() => {
+      mole.style.transform = 'scale(1)';
+    }, 100);
+  });
+});
