@@ -40,7 +40,7 @@ h2 {
   display: flex;
   flex-wrap: wrap;
   margin: 0 auto;
-  /*cursor: url('./assets/mallet.png'), pointer;*/
+  cursor: url('https://github.com/Thinkful-Ed/js-dev-final-capstone-starter/blob/main/assets/mallet.png?raw=true'), pointer;
 }
 
 .hole {
@@ -74,23 +74,22 @@ h2 {
   /*transition: transform 0.5s;*/
   transition: all 1s;
   pointer-events:auto;
+  cursor: url('https://github.com/Thinkful-Ed/js-dev-final-capstone-starter/blob/main/assets/mallet.png?raw=true'), pointer;
 }
-.mallet {
-  position: absolute;
-  width: 60px;
-  height: 80px;
-  background: url('https://www.example.com/mallet.png') no-repeat center center;
-  background-size: contain;
-  pointer-events: none;
-  z-index: 10;
-  transform-origin: center;
-  visibility: hidden;
-}
+</old_str>
 
-#background-music {
-  display: none;
-}
 .hole.show .mole {
   top: 0;
   /*transform: scale(1.1);*/
+}
+.cursor {
+  position: absolute;
+  height: 100px;
+  width: 100px;
+  background-image: url('https://github.com/Thinkful-Ed/js-dev-final-capstone-starter/blob/main/assets/mallet.png?raw=true');
+  background-size: 100%;
+  background-position: center;
+  transform: translate(-20%, -20%);
+  pointer-events: none;
+  z-index: 999;
 }
